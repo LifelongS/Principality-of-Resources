@@ -1,0 +1,87 @@
+{# game_service/templates/game.html #}
+
+{% extends 'base.html' %}
+
+{% block title %}Игровая панель - {{ username }}{% endblock %}
+
+{% block head_extra %}
+    {# Ссылка на стили ИГРОВОГО сервиса #}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/game_styles.css') }}">
+    {# ИСПРАВЛЕНО: Ссылка на JS ИГРОВОГО сервиса #}
+    <script src="{{ url_for('static', filename='js/game.js') }}" defer></script>
+{% endblock %}
+
+
+{# Основной контент страницы #}
+{% block content %}
+    <h1>Добро пожаловать в игру, {{ username }}!</h1>
+
+    <!-- Отображение ресурсов -->
+    <section class="card">
+        <h2>Ваши ресурсы:</h2>
+        {% if resources %}
+        <ul>
+            <li>🌲 Дерево: <span id="wood">{{ resources.wood }}</span></li>
+            <li>🪨 Камень: <span id="stone">{{ resources.stone }}</span></li>
+            <li>💰 Золото: <span id="gold">{{ resources.gold }}</span></li>
+        </ul>
+        {% else %}
+         <p>Данные о ресурсах загружаются...</p>
+        {% endif %}
+    </section>
+
+    <!-- Отображение зданий -->
+    {% if buildings %}
+    <section class="card">
+        <h3>Ваши здания:</h3>
+        <ul>
+            <li>🏡 Лесопилка (Уровень <span id="sawmill">{{ buildings.sawmill_level }}</span>)</li>
+            <li>🏗 Каменоломня (Уровень <span id="quarry">{{ buildings.quarry_level }}</span>)</li>
+            <li>⛏ Золотой рудник (Уровень <span id="mine">{{ buildings.mine_level }}</span>)</li>
+        </ul>
+    </section>
+    {% else %}
+    <section class="card">
+         <p>Данные о зданиях загружаются...</p>
+    </section>
+    {% endif %}
+
+    <!-- Сбор ресурсов -->
+    <section class="card">
+        <h3>Сбор ресурсов</h3>
+        <form action="{{ url_for('game_bp.collect_resources') }}" method="POST">
+             <input type="hidden" name="token" value="{{ token }}">
+             <button type="submit" {% if not can_collect %}disabled title="Собирать можно раз в час"{% endif %}>Собрать ресурсы</button>
+        </form>
+        {% if not can_collect %}
+         <p><small>(Собирать можно раз в час)</small></p>
+        {% endif %}
+    </section>
+
+    <!-- Строительство зданий -->
+    {% if buildings %}
+    <section class="card building-buttons">
+        <h3>Строительство зданий</h3>
+        <form action="{{ url_for('game_bp.build_building', building_type='sawmill') }}" method="POST">
+             <input type="hidden" name="token" value="{{ token }}">
+            <button type="submit">Улучшить лесопилку (Ур. {{ buildings.sawmill_level }})</button>
+        </form>
+        <form action="{{ url_for('game_bp.build_building', building_type='quarry') }}" method="POST">
+             <input type="hidden" name="token" value="{{ token }}">
+            <button type="submit">Улучшить каменоломню (Ур. {{ buildings.quarry_level }})</button>
+        </form>
+        <form action="{{ url_for('game_bp.build_building', building_type='mine') }}" method="POST">
+             <input type="hidden" name="token" value="{{ token }}">
+            <button type="submit">Улучшить рудник (Ур. {{ buildings.mine_level }})</button>
+        </form>
+    </section>
+    {% endif %}
+
+    <br>
+    <!-- Выход -->
+    <div class="logout">
+        <a href="{{ url_for('game_bp.logout') }}"><button>Выйти</button></a>
+    </div>
+{% endblock %} {# Закрываем блок content #}
+
+

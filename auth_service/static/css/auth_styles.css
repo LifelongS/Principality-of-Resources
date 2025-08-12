@@ -1,0 +1,11 @@
+/* auth_service/static/css/auth_styles.css */
+body {
+    /* Этот фон будет ПЕРЕОПРЕДЕЛЯТЬ фон из base.html ТОЛЬКО на страницах auth_service */
+    background: url("../images/bg.jpg") no-repeat center center fixed;
+    background-size: cover;
+    /* Можно добавить/оставить другие стили, специфичные для auth страниц, если они есть */
+    /* Например, центрирование формы входа/регистрации, если оно отличается от общего .container */
+}
+
+/* Стили для .flash и .nav можно удалить, если они покрываются base.html */
+/* Стили для .building-buttons здесь точно не нужны */

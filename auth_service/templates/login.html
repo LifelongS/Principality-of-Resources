@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Вход{% endblock %}
+
+{% block head_extra %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth_styles.css') }}">
+    {# Подключаем JS для логина #}
+    <script src="{{ url_for('static', filename='js/login.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+<div class="card auth-form"> {# Можно добавить класс для специфичного позиционирования формы #}
+  <h2>Вход в систему</h2>
+  <form id="login-form">
+      <div>
+          <label for="username">Имя пользователя:</label>
+          <input type="text" id="username" name="username" required>
+      </div>
+      <div>
+          <label for="password">Пароль:</label>
+          <input type="password" id="password" name="password" required>
+      </div>
+      <button type="submit" class="btn">Войти</button>
+      <p id="error-message" style="color: red; display: none;"></p>
+  </form>
+  <p>Нет аккаунта? <a href="{{ url_for('auth.register') }}">Зарегистрироваться</a></p> {# Используем url_for для ссылки #}
+</div>
+{% endblock %}
+

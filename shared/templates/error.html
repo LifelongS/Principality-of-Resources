@@ -1,0 +1,66 @@
+
+{% extends 'base.html' %}
+
+{# shared/templates/error.html #}
+{% extends 'base.html' %} {# Наследуем от общего базового шаблона #}
+
+{% block title %}Ошибка{% endblock %}
+
+{% block head_extra %}
+<style>
+    .error-container {
+        padding: 2rem;
+        background-color: rgba(255, 0, 0, 0.1);
+        border: 1px solid #dc3545; /* Используем цвет Bootstrap danger */
+        border-radius: 10px;
+        text-align: center;
+        color: #f8d7da; /* Светлый текст для темного фона */
+    }
+    .error-container h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: #f5c6cb; /* Чуть темнее заголовка */
+    }
+    .error-container p {
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+    }
+    .error-container a .btn, .error-container a button {
+        display: inline-block;
+        padding: 0.6rem 1.2rem; /* Как у других кнопок */
+        background-color: #dc3545; /* Цвет Bootstrap danger */
+        color: #fff;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: background 0.3s ease;
+        border: none; /* Убираем рамку у кнопки внутри ссылки */
+        cursor: pointer; /* Добавляем курсор */
+        font-size: 1rem; /* Как у других кнопок */
+    }
+    .error-container a .btn:hover, .error-container a button:hover {
+        background-color: #c82333; /* Темнее при наведении */
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="error-container">
+    <h1>Произошла ошибка</h1>
+    {# Отображаем сообщение, переданное из Flask #}
+    <p>{{ message or 'Неизвестная ошибка.' }}</p> {# Добавим текст по умолчанию #}
+
+    {# Отображаем ссылку "Назад", если она передана из Flask #}
+    {% if back_url %}
+        <a href="{{ back_url }}"><button>Назад</button></a>
+    {% endif %}
+
+    {# Удаляем жесткую привязку к game_bp и auth_bp #}
+    {# Вместо этого, логика должна быть в контроллере, который решает, какую ссылку показать #}
+    {# {% if token %} #}
+    {#     <a href="{{ url_for('game_bp.game_page', token=token) }}">Вернуться в игру</a> #}
+    {# {% else %} #}
+    {#     <a href="{{ url_for('auth_bp.login') }}">Вернуться на страницу входа</a> #}
+    {# {% endif %} #}
+
+</div>
+{% endblock %}
